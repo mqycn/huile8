@@ -1,7 +1,7 @@
 {
 	"name": "huile8",
 	"displayName": "会了吧",
-	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码",
+	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码。用了会了吧，统统都会啦！",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.48.0"
@@ -18,7 +18,7 @@
 			"activitybar": [
 				{
 					"id": "huile8-explorer",
-					"title": "会啦吧",
+					"title": "会了吧",
 					"icon": "resources/icon.svg"
 				}
 			]
