@@ -1,7 +1,7 @@
 {
 	"name": "huile8",
-	"displayName": "HuiLe8",
-	"description": "",
+	"displayName": "会了吧",
+	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.48.0"
@@ -10,14 +10,87 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:huile8.helloWorld"
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "huile8-explorer",
+					"title": "会啦吧",
+					"icon": "resources/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"huile8-explorer": [
+				{
+					"id": "huile8-will-mastering",
+					"name": "还不会"
+				},
+				{
+					"id": "huile8-mastered",
+					"name": "已学会"
+				}
+			]
+		},
 		"commands": [
 			{
-				"command": "huile8.helloWorld",
-				"title": "Hello World"
+				"command": "huile8.refresh",
+				"title": "重新刷新文件",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "huile8.willMastering ",
+				"title": "忽然又不会了",
+				"icon": {
+					"light": "resources/light/will-mastering.svg",
+					"dark": "resources/dark/will-mastering.svg"
+				}
+			},
+			{
+				"command": "huile8.didMastered",
+				"title": "学会了",
+				"icon": {
+					"light": "resources/light/did-mastered.svg",
+					"dark": "resources/dark/did-mastered.svg"
+				}
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "huile8.refresh",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "huile8.didMastered",
+					"when": "view == huile8-will-mastering",
+					"group": "inline"
+				},
+				{
+					"command": "huile8.willMastering",
+					"when": "view == huile8-mastered",
+					"group": "inline"
+				}
+			]
+		},
+		"configuration": [
+			{
+				"title": "会了吧",
+				"properties": {
+					"huile8.autoRefresh": {
+						"type": "boolean",
+						"default": true,
+						"description": "是否开启打开文件自动提取单词的功能"
+					}
+				}
 			}
 		]
 	},
