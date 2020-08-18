@@ -1,37 +1,33 @@
 // The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+const { WordsApp } = require('./src/words');
+const { CommandDidMastered, CommandRefresh, CommandWillMastering, CommandRead } = require('./src/const');
 
 /**
+ * 激活
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+	const { window, commands } = vscode;
+	const { registerTreeDataProvider } = window;
+	const { registerCommand } = commands;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "huile8" is now active!');
+	const app = new WordsApp(context);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('huile8.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
+	registerTreeDataProvider('huile8-will-mastering', app.providerWillMastering);
+	registerTreeDataProvider('huile8-mastered', app.providerMastered);
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from HuiLe8!');
-	});
+	registerCommand(CommandRefresh, () => { app.refresh(); });
+	registerCommand(CommandDidMastered, (item) => { app.didMastered(item); });
+	registerCommand(CommandWillMastering, (item) => { app.willMastering(item); });
+	registerCommand(CommandRead, (item) => { app.read(item); });
+};
 
-	context.subscriptions.push(disposable);
-}
-exports.activate = activate;
-
-// this method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() {
+	// 卸载
+};
 
 module.exports = {
 	activate,
 	deactivate
-}
+};
