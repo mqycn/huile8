@@ -45,7 +45,7 @@
 				}
 			},
 			{
-				"command": "huile8.willMastering ",
+				"command": "huile8.willMastering",
 				"title": "忽然又不会了",
 				"icon": {
 					"light": "resources/light/will-mastering.svg",
@@ -59,6 +59,10 @@
 					"light": "resources/light/did-mastered.svg",
 					"dark": "resources/dark/did-mastered.svg"
 				}
+			},
+			{
+				"command": "huile8.read",
+				"title": "朗读"
 			}
 		],
 		"menus": {
