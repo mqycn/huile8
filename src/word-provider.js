@@ -1,6 +1,7 @@
 // 单词列表
 const vscode = require('vscode');
 const { CommandRead } = require('./const');
+const path = require('path');
 
 module.exports = class WordProvider {
   constructor(context) {
@@ -32,18 +33,39 @@ module.exports = class WordProvider {
 
   // 刷新
   flush() {
-    this.list.sort();
+    const tree = [];
+    let element = {};
+    this.list.sort().forEach(word => {
+      let prefix = word.substr(0, 1);
+      if (element.prefix != prefix) {
+        element = {
+          prefix,
+          children: []
+        };
+        tree.push(element);
+      }
+      element.children.push(word);
+    });
+    this.tree = tree;
     this.changeTreeDataEmitter.fire(undefined);
   }
 
   // 获取子节点
-  getChildren() {
-    return this.list;
+  getChildren(element) {
+    if (!element) {
+      return this.tree;
+    } else {
+      return element.children;
+    }
   }
 
   // 获取元素内容
   getTreeItem(element) {
-    return new WordItem(element);
+    if (typeof element === 'object') {
+      return new WordGroup(element);
+    } else {
+      return new WordItem(element);
+    }
   }
 };
 
@@ -64,4 +86,23 @@ class WordItem extends vscode.TreeItem {
   get tooltip() {
     return 'TODO: 翻译内容';
   }
+
+  get iconPath() {
+    return {
+      light: path.join(__filename, '..', 'resources', 'light', 'icon.svg'),
+      dark: path.join(__filename, '..', 'resources', 'dark', 'icon.svg')
+    }
+  };
+
+  get contextValue() {
+    return 'word';
+  }
 };
+
+class WordGroup extends vscode.TreeItem {
+  constructor(element) {
+    super(element.prefix.toUpperCase());
+    this.description = `共${element.children.length}个`;
+    this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+  };
+}

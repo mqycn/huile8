@@ -75,12 +75,12 @@
 			"view/item/context": [
 				{
 					"command": "huile8.didMastered",
-					"when": "view == huile8-will-mastering",
+					"when": "view == huile8-will-mastering && viewItem == word",
 					"group": "inline"
 				},
 				{
 					"command": "huile8.willMastering",
-					"when": "view == huile8-mastered",
+					"when": "view == huile8-mastered && viewItem == word",
 					"group": "inline"
 				}
 			]
