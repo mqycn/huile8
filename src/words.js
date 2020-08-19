@@ -1,6 +1,7 @@
 // 获取当前打开页面的单词
 const vscode = require('vscode');
 const WordProvider = require('./word-provider');
+const { hasMastered, addMastered, removeMastered } = require('./storage');
 
 class WordsApp {
 
@@ -40,12 +41,17 @@ class WordsApp {
     });
 
     // 单词整理，暂时先都放到 还不会
-    const { providerWillMastering } = this.dataInit();
+    const { providerWillMastering, providerMastered } = this.dataInit();
     Array.from(wordsSet).forEach(word => {
-      providerWillMastering.list.push(word);
+      if (hasMastered(word)) {
+        providerMastered.list.push(word);
+      } else {
+        providerWillMastering.list.push(word);
+      }
     });
 
     // 更新并清空Set
+    providerMastered.flush();
     providerWillMastering.flush();
     wordsSet.clear();
 
@@ -55,19 +61,21 @@ class WordsApp {
 
   // 还不会 -> 已学会
   didMastered(item) {
+    addMastered(item);
     this.providerMastered.push(item);
     this.providerWillMastering.remove(item);
   }
 
   // 已学会 ->  还不会
   willMastering(item) {
+    removeMastered(item);
     this.providerMastered.remove(item);
     this.providerWillMastering.push(item);
   }
 
   // 阅读
   read(item) {
-    vscode.window.showInformationMessage(`开始播放：${item}`);
+    vscode.window.showInformationMessage(`TODO: 播放${item}`);
   }
 };
 
