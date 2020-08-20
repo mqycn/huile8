@@ -1,9 +1,17 @@
-# Change Log
+# 更新记录
 
-All notable changes to the "huile8" extension will be documented in this file.
+## [v0.0.3] （ 2020-8-20）
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### BUG修复
 
-## [Unreleased]
+- 修复 升级后 *已掌握单词列表* 丢失的问题
 
-- Initial release
+### 新增功能
+
+- 增加 **已掌握单词配置文件**， 文件路径 *[用户目录]/.vscode/huile8-mastered-list.txt*，设置已掌握单词：
+
+## [v0.0.1] （ 2020-8-19）
+
+- 预览版本上线
+
+- 打开源码会自动分析包含的单词

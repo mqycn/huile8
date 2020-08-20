@@ -3,7 +3,7 @@
 	"publisher": "mqycn",
 	"displayName": "会了吧",
 	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码。用了会了吧，统统都会啦！",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.48.0"
 	},
@@ -28,11 +28,11 @@
 			"huile8-explorer": [
 				{
 					"id": "huile8-will-mastering",
-					"name": "还不会"
+					"name": "陌生单词"
 				},
 				{
 					"id": "huile8-mastered",
-					"name": "已学会"
+					"name": "已掌握单词"
 				}
 			]
 		},
@@ -47,7 +47,7 @@
 			},
 			{
 				"command": "huile8.willMastering",
-				"title": "忽然又不会了",
+				"title": "添加到 陌生单词",
 				"icon": {
 					"light": "resources/light/will-mastering.svg",
 					"dark": "resources/dark/will-mastering.svg"
@@ -55,7 +55,7 @@
 			},
 			{
 				"command": "huile8.didMastered",
-				"title": "学会了",
+				"title": "添加到 已掌握单词",
 				"icon": {
 					"light": "resources/light/did-mastered.svg",
 					"dark": "resources/dark/did-mastered.svg"
