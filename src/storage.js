@@ -1,15 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const dbFile = path.join(__dirname, '..', 'resources', 'mastered-list.json');
+const dbFile = path.join(__dirname, '..', '..', '..', 'huile8-mastered-list.txt');
 
 const masteredList = new Set();
 
 // 读取记录
 if (fs.existsSync(dbFile)) {
     const json = fs.readFileSync(dbFile).toString();
-    JSON.parse(json).forEach(word => {
-        masteredList.add(word);
+    json.split('\n').forEach(word => {
+        masteredList.add(word.trim());
     });
 }
 
@@ -18,7 +18,7 @@ function saveToFile() {
     const list = Array.from(masteredList).map(word => {
         return word;
     });
-    fs.writeFileSync(dbFile, JSON.stringify(list));
+    fs.writeFileSync(dbFile, list.join('\n'));
 }
 
 // 是否包含单词
