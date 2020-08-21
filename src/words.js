@@ -2,6 +2,7 @@
 const vscode = require('vscode');
 const WordProvider = require('./word-provider');
 const { hasMastered, addMastered, removeMastered } = require('./storage');
+const getWords = require('./parse');
 
 class WordsApp {
 
@@ -34,16 +35,11 @@ class WordsApp {
 
   // 分析新打开文件包含的单词
   refresh() {
-    const wordsSet = new Set();
     const text = vscode.window.activeTextEditor.document.getText();
-    text.replace(/([A-Za-z][a-z]+)/g, ($1, $2) => {
-      wordsSet.add($2.toLowerCase());
-      return '-';
-    });
 
     // 单词整理，暂时先都放到 还不会
     const { providerWillMastering, providerMastered } = this.dataInit();
-    Array.from(wordsSet).forEach(word => {
+    getWords(text).forEach(word => {
       if (hasMastered(word)) {
         providerMastered.list.push(word);
       } else {
@@ -54,7 +50,6 @@ class WordsApp {
     // 更新并清空Set
     providerMastered.flush();
     providerWillMastering.flush();
-    wordsSet.clear();
 
     // 分析完毕
     vscode.window.showInformationMessage('所有包含的单词分析完毕！');
