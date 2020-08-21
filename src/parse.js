@@ -15,7 +15,6 @@ module.exports = function (text) {
 
     const wordsList = Array.from(wordsSet);
     wordsSet.clear();
-    
+
     return wordsList;
-};
 };
