@@ -3,6 +3,7 @@ const vscode = require('vscode');
 const WordProvider = require('./word-provider');
 const { hasMastered, addMastered, removeMastered } = require('./storage');
 const getWords = require('./parse');
+const readPanel = require('./read-panel');
 
 class WordsApp {
 
@@ -71,50 +72,9 @@ class WordsApp {
 
   // 阅读
   read(item) {
-
-    // 请求播放
-    this.getReadView().postMessage(item);
-
-  }
-
-  // 创建播放窗口
-  getReadView() {
-    if (!this.$__readPanel) {
-      const panel = this.$__readPanel = vscode.window.createWebviewPanel(
-        'ReadPanel',
-        '会了吧：单词朗读',
-        vscode.ViewColumn.One,
-        {
-          enableScripts: true,
-          retainContextWhenHidden: true
-        }
-      );
-
-      // WebView内容
-      panel.webview.html = `
-          <h1>朗读页面</h1>
-          <script>
-          const vscode = acquireVsCodeApi();
-          window.addEventListener('message', event => {
-            const message = event.data;
-            const utterance = new SpeechSynthesisUtterance(message);
-            speechSynthesis.speak(utterance);
-            vscode.postMessage(message);
-          });
-          </script>
-        `;
-
-      // 读完关闭
-      panel.webview.onDidReceiveMessage((message) => {
-        vscode.window.showInformationMessage(`朗读: ${message}`);
-      });
-
-      // 关闭事件
-      panel.onDidDispose(() => {
-        this.$__readPanel = null;
-      });
-    }
-    return this.$__readPanel.webview;
+    readPanel().postMessage({
+      word: item
+    });
   }
 };
 

@@ -1,0 +1,12 @@
+<h1>朗读页面，且点击标签切换到代码页</h1>
+<script>
+    const vscode = acquireVsCodeApi();
+    window.addEventListener('message', event => {
+        const {
+            word
+        } = event.data;
+        const utterance = new SpeechSynthesisUtterance(word);
+        speechSynthesis.speak(utterance);
+        vscode.postMessage(word);
+    });
+</script>
