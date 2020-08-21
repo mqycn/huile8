@@ -2,6 +2,7 @@
 const vscode = require('vscode');
 const { CommandRead } = require('./const');
 const path = require('path');
+const { localDictionary, addWordTask } = require('./dictionary');
 
 module.exports = class WordProvider {
   constructor(context) {
@@ -47,7 +48,14 @@ module.exports = class WordProvider {
       element.children.push(word);
     });
     this.tree = tree;
+
+    // 更新列表
     this.changeTreeDataEmitter.fire(undefined);
+
+    // 创建翻译任务
+    addWordTask(this.list, () => {
+      this.flush();
+    });
   }
 
   // 获取子节点
@@ -73,6 +81,7 @@ class WordItem extends vscode.TreeItem {
   constructor(word) {
     super(word);
     this.word = word;
+    this.translation = localDictionary[word];
   };
 
   get command() {
@@ -84,7 +93,7 @@ class WordItem extends vscode.TreeItem {
   }
 
   get tooltip() {
-    return 'TODO: 翻译内容';
+    return this.translation ? this.translation : 'loading...';
   }
 
   get iconPath() {
