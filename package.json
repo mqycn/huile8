@@ -119,5 +119,8 @@
 		"mocha": "^8.0.1",
 		"typescript": "^3.8.3",
 		"vscode-test": "^1.4.0"
+	},
+	"dependencies": {
+		"sqlite3": "^5.0.0"
 	}
 }
