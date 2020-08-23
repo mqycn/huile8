@@ -3,10 +3,10 @@
     const vscode = acquireVsCodeApi();
     window.addEventListener('message', event => {
         const {
-            word
+            word,
         } = event.data;
         const utterance = new SpeechSynthesisUtterance(word);
         speechSynthesis.speak(utterance);
-        vscode.postMessage(word);
+        vscode.postMessage(event.data);
     });
 </script>
