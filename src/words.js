@@ -72,9 +72,7 @@ class WordsApp {
 
   // 阅读
   read(item) {
-    readPanel().postMessage({
-      word: item
-    });
+    readPanel().postMessage(item);
   }
 };
 
