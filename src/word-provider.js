@@ -110,6 +110,10 @@ class WordItem extends vscode.TreeItem {
     }
   };
 
+  get description() {
+    return this.data.translation;
+  }
+
   get contextValue() {
     return 'word';
   }
