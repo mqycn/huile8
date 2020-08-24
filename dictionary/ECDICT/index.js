@@ -1,71 +1,60 @@
-const sqlite3 = require('sqlite3');
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = path.join(__dirname, 'db.db');
-
-const ecdictDb = {
-    open() {
-        this.Db = new sqlite3.Database(dbPath);
-    },
-    close() {
-        if (this.Db) {
-            this.Db.close();
-            this.Db = null;
-        }
-    },
-    query(word, callback) {
-        if (!this.Db) {
-            this.open();
-        }
-        const sql = `select * from ecdict where word="${word}"`;
-        this.Db.all(sql, (err, rows) => {
-            if (err) {
-                callback(null);
-            } else {
-                if (rows.length > 0) {
-                    callback(rows[0]);
-                } else {
-                    callback(null);
-                }
+const getWordsInfo = (prefix, words) => {
+    const db = path.join(__dirname, `${prefix}.json`);
+    const datas = JSON.parse(fs.readFileSync(db, 'utf-8'));
+    return words.map(word => {
+        if (word in datas) {
+            let raw = word;
+            let phonetic = null;
+            let translation = datas[word];
+            if (typeof translation == 'object') {
+                raw = translation.w || word;
+                phonetic = translation.p;
+                translation = translation.t;
             }
-        });
-    }
+            return {
+                status: true,
+                word,
+                raw,
+                phonetic,
+                translation
+            };
+        } else {
+            return {
+                status: false,
+                word,
+                message: '单词未收录'
+            };
+        }
+    });
 };
 
 const ecdictApi = {
-    query(word, onFinish) {
-        return new Promise((resolve, reject) => {
-            ecdictDb.query(word, (res) => {
-                onFinish && onFinish();
-                if (!res) {
-                    resolve({
-                        status: false,
-                        word,
-                        message: '单词未收录'
-                    })
-                } else {
-                    resolve({
-                        status: true,
-                        word,
-                        phonetic: res.phonetic,
-                        translation: res.translation
-                    })
-                }
-            });
-        });
-    },
-    end() {
-        ecdictDb.close();
+    prefix(word) {
+        return word.substr(0, 2);
     },
     one(word) {
-        return this.query(word, this.end);
+        return new Promise((resolve, reject) => {
+            resolve(getWordsInfo(this.prefix(word), [word])[0]);
+        });
     },
     all(words) {
         return new Promise((resolve, reject) => {
-            Promise.all(words.map(word => this.query(word))).then((values) => {
-                this.end();
-                resolve(values);
+            const results = [];
+            const caches = {};
+            words.forEach(word => {
+                const prefix = this.prefix(word);
+                const node = caches[prefix] = caches[prefix] || [];
+                node.push(word);
             });
+            Object.keys(caches).forEach(prefix => {
+                getWordsInfo(prefix, caches[prefix]).forEach(item => {
+                    results.push(item);
+                });
+            });
+            resolve(results);
         });
     }
 }
