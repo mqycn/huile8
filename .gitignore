@@ -3,3 +3,4 @@ node_modules
 *.vsix
 package-lock.json
 .DS_Store
+dictionary/ECDICT/*.json

@@ -3,7 +3,7 @@
 	"publisher": "mqycn",
 	"displayName": "会了吧",
 	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码。用了会了吧，统统都会啦！",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"engines": {
 		"vscode": "^1.48.0"
 	},
@@ -106,6 +106,9 @@
 	},
 	"scripts": {
 		"lint": "eslint .",
+		"dict.init": "git clone https://github.com/mqycn/huile8-ecdict.git ../huile8-ecdict",
+		"dict.update": "cd ../huile8-ecdict && git pull && npm install && npm run make",
+		"public": "vsce package",
 		"pretest": "npm run lint",
 		"test": "node ./test/runTest.js"
 	},
