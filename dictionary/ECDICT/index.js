@@ -42,19 +42,21 @@ const ecdictApi = {
     },
     all(words) {
         return new Promise((resolve, reject) => {
-            const results = [];
-            const caches = {};
-            words.forEach(word => {
-                const prefix = this.prefix(word);
-                const node = caches[prefix] = caches[prefix] || [];
-                node.push(word);
-            });
-            Object.keys(caches).forEach(prefix => {
-                getWordsInfo(prefix, caches[prefix]).forEach(item => {
-                    results.push(item);
+            setTimeout(() => { //防止阻塞其他任务
+                const results = [];
+                const caches = {};
+                words.forEach(word => {
+                    const prefix = this.prefix(word);
+                    const node = caches[prefix] = caches[prefix] || [];
+                    node.push(word);
                 });
-            });
-            resolve(results);
+                Object.keys(caches).forEach(prefix => {
+                    getWordsInfo(prefix, caches[prefix]).forEach(item => {
+                        results.push(item);
+                    });
+                });
+                resolve(results);
+            }, 100);
         });
     }
 }

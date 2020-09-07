@@ -3,6 +3,7 @@ const vscode = require('vscode');
 const { CommandRead } = require('./const');
 const path = require('path');
 const { localDictionary, addWordTask } = require('./dictionary');
+const statusBar = require('./status-bar');
 
 module.exports = class WordProvider {
   constructor(context) {
@@ -51,11 +52,13 @@ module.exports = class WordProvider {
 
     // 更新列表
     this.changeTreeDataEmitter.fire(undefined);
+    statusBar.update('单词分析完毕！');
 
     // 创建翻译任务
     addWordTask(this.list, () => {
       this.flush();
     });
+
   }
 
   // 获取子节点

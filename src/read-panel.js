@@ -2,6 +2,7 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
+const statusBar = require('./status-bar');
 
 const viewPath = path.join(__dirname, '..', 'view', 'list.html');
 const viewHtml = fs.readFileSync(viewPath, {
@@ -32,7 +33,7 @@ module.exports = function () {
         // 读完关闭
         panel.webview.onDidReceiveMessage(_data => {
             const { word, data } = _data;
-            vscode.window.setStatusBarMessage([
+            statusBar.update([
                 `朗读: ${word}`,
                 data && data.phonetic ?
                     `音标：[${data.phonetic}]`

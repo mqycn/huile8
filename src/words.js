@@ -4,6 +4,7 @@ const WordProvider = require('./word-provider');
 const { hasMastered, addMastered, removeMastered } = require('./storage');
 const getWords = require('./parse');
 const readPanel = require('./read-panel');
+const statusBar = require('./status-bar');
 
 class WordsApp {
 
@@ -36,6 +37,7 @@ class WordsApp {
 
   // 分析新打开文件包含的单词
   refresh() {
+    statusBar.update('单词分析中...');
     const text = vscode.window.activeTextEditor.document.getText();
 
     // 单词整理，暂时先都放到 还不会
@@ -51,10 +53,6 @@ class WordsApp {
     // 更新并清空Set
     providerMastered.flush();
     providerWillMastering.flush();
-
-    // 分析完毕
-    vscode.window.setStatusBarMessage('所有包含的单词分析完毕！');
-
   }
 
   // 还不会 -> 已学会
