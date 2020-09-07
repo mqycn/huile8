@@ -32,7 +32,7 @@ module.exports = function () {
         // 读完关闭
         panel.webview.onDidReceiveMessage(_data => {
             const { word, data } = _data;
-            vscode.window.showInformationMessage([
+            vscode.window.setStatusBarMessage([
                 `朗读: ${word}`,
                 data && data.phonetic ?
                     `音标：[${data.phonetic}]`

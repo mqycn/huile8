@@ -53,7 +53,8 @@ class WordsApp {
     providerWillMastering.flush();
 
     // 分析完毕
-    vscode.window.showInformationMessage('所有包含的单词分析完毕！');
+    vscode.window.setStatusBarMessage('所有包含的单词分析完毕！');
+
   }
 
   // 还不会 -> 已学会
