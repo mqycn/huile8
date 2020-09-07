@@ -5,6 +5,7 @@ const { hasMastered, addMastered, removeMastered } = require('./storage');
 const getWords = require('./parse');
 const readPanel = require('./read-panel');
 const statusBar = require('./status-bar');
+const { configReload, autoRefresh } = require('./config');
 
 class WordsApp {
 
@@ -17,15 +18,13 @@ class WordsApp {
     vscode.window.onDidChangeActiveTextEditor(() => this.onActiveEditorChanged());
     this.onActiveEditorChanged();
 
+    // 监听配置改变
+    context.subscriptions.push(configReload);
   }
 
   // 打开的文件
   onActiveEditorChanged() {
-    if (vscode.window.activeTextEditor) {
-      if (vscode.window.activeTextEditor.document.uri.scheme === 'file') {
-        this.refresh();
-      }
-    }
+    autoRefresh.value && this.refresh();
   }
 
   // 清空单词列表
@@ -37,22 +36,28 @@ class WordsApp {
 
   // 分析新打开文件包含的单词
   refresh() {
-    statusBar.update('单词分析中...');
-    const text = vscode.window.activeTextEditor.document.getText();
+    if (!vscode.window.activeTextEditor) {
+      statusBar.update('请切换到代码文件');
+    } else if (vscode.window.activeTextEditor.document.uri.scheme !== 'file') {
+      statusBar.update('只支持本地文件');
+    } else {
+      statusBar.update('单词分析中...');
+      const text = vscode.window.activeTextEditor.document.getText();
 
-    // 单词整理，暂时先都放到 还不会
-    const { providerWillMastering, providerMastered } = this.dataInit();
-    getWords(text).forEach(word => {
-      if (hasMastered(word)) {
-        providerMastered.list.push(word);
-      } else {
-        providerWillMastering.list.push(word);
-      }
-    });
+      // 单词整理，暂时先都放到 还不会
+      const { providerWillMastering, providerMastered } = this.dataInit();
+      getWords(text).forEach(word => {
+        if (hasMastered(word)) {
+          providerMastered.list.push(word);
+        } else {
+          providerWillMastering.list.push(word);
+        }
+      });
 
-    // 更新并清空Set
-    providerMastered.flush();
-    providerWillMastering.flush();
+      // 更新并清空Set
+      providerMastered.flush();
+      providerWillMastering.flush();
+    }
   }
 
   // 还不会 -> 已学会
