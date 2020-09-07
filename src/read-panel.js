@@ -12,7 +12,10 @@ let _readPanel;
 
 module.exports = function () {
     if (!_readPanel) {
-        const activeDocument = vscode.window.activeTextEditor.document;
+
+        const activeDocument = vscode.window.activeTextEditor ?
+            vscode.window.activeTextEditor.document :
+            null
         const panel = _readPanel = vscode.window.createWebviewPanel(
             'ReadPanel',
             '会了吧：单词朗读',
@@ -43,10 +46,11 @@ module.exports = function () {
         });
 
         // 启动后激活之前的标签
-        setTimeout(() => {
-            vscode.window.showTextDocument(activeDocument);
-        }, 200);
-
+        if (activeDocument) {
+            setTimeout(() => {
+                vscode.window.showTextDocument(activeDocument);
+            }, 200);
+        }
     }
     return _readPanel.webview;
 };
