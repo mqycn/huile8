@@ -71,7 +71,8 @@
 			"view/title": [
 				{
 					"command": "huile8.refresh",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "view =~ /huile8-will-mastering|huile8-mastered/"
 				}
 			],
 			"view/item/context": [
