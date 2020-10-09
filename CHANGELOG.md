@@ -1,5 +1,11 @@
 # 更新记录
 
+## [v0.0.10] （2020-10-9）
+
+### BUG修复
+
+- 修复 Cannot read property 'translation' of undefined的bug
+
 ## [v0.0.9] （2020-9-8）
 
 ### 新增功能

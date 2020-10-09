@@ -114,12 +114,14 @@ class WordItem extends vscode.TreeItem {
   };
 
   get description() {
-    return this.data.translation;
-  }
+    return this.data ?
+      this.data.translation
+      : '未收录';
+  };
 
   get contextValue() {
     return 'word';
-  }
+  };
 };
 
 class WordGroup extends vscode.TreeItem {
