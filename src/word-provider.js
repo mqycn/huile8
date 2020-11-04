@@ -3,6 +3,7 @@ const vscode = require('vscode');
 const { CommandRead } = require('./const');
 const path = require('path');
 const { localDictionary, addWordTask } = require('./dictionary');
+const statusBar = require('./status-bar');
 
 module.exports = class WordProvider {
   constructor(context) {
@@ -51,11 +52,13 @@ module.exports = class WordProvider {
 
     // 更新列表
     this.changeTreeDataEmitter.fire(undefined);
+    statusBar.update('单词分析完毕！');
 
     // 创建翻译任务
     addWordTask(this.list, () => {
       this.flush();
     });
+
   }
 
   // 获取子节点
@@ -81,19 +84,26 @@ class WordItem extends vscode.TreeItem {
   constructor(word) {
     super(word);
     this.word = word;
-    this.translation = localDictionary[word];
+    this.data = localDictionary[word];
   };
 
   get command() {
     return {
       command: CommandRead,
       title: `播放 ${this.word}`,
-      arguments: [this.word]
+      arguments: [this]
     };
   }
 
   get tooltip() {
-    return this.translation ? this.translation : 'loading...';
+    return this.data ?
+      this.data.phonetic ?
+        [
+          `音标：[${this.data.phonetic}}]`,
+          `解释：${this.data.translation.replace(/\n/g, '\n　　　')}`
+        ].join('\n')
+        : this.data.translation
+      : 'loading...';
   }
 
   get iconPath() {
@@ -103,9 +113,15 @@ class WordItem extends vscode.TreeItem {
     }
   };
 
+  get description() {
+    return this.data ?
+      this.data.translation
+      : '未收录';
+  };
+
   get contextValue() {
     return 'word';
-  }
+  };
 };
 
 class WordGroup extends vscode.TreeItem {
@@ -113,5 +129,6 @@ class WordGroup extends vscode.TreeItem {
     super(element.prefix.toUpperCase());
     this.description = `共${element.children.length}个`;
     this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+    this.tooltip = `${element.prefix.toUpperCase()}开头的单词${this.description}`;
   };
 }
