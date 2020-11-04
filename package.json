@@ -107,7 +107,8 @@
 	},
 	"scripts": {
 		"lint": "eslint .",
-		"dict.init": "git clone https://github.com/mqycn/huile8-ecdict.git ../huile8-ecdict",
+		"dict.init": "git clone https://gitee.com/mqycn/huile8-ecdict.git ../huile8-ecdict",
+		"dict.init-github": "git clone https://github.com/mqycn/huile8-ecdict.git ../huile8-ecdict",
 		"dict.update": "cd ../huile8-ecdict && git pull && npm install && npm run make",
 		"publish": "vsce package",
 		"pretest": "npm run lint",

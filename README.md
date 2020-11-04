@@ -74,8 +74,12 @@ world
 # 1、代码克隆
 git clone https://github.com/mqycn/huile8.git
 
-# 2、更新词库
+# 2、更新词库 (从 gitee.com 获取词库)
 npm run dict.init
+npm run dict.update
+
+# 如果从 github.com 获取词库，请执行
+npm run dict.init-github
 npm run dict.update
 
 # 3、vscode 调试
