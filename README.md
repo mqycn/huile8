@@ -8,11 +8,20 @@
 
 **您的救星来了！！！用了“会了吧”，轻松“学会啦”**
 
+
 # 使用流程
 
 安装后，点击源码文件，会自动分析所有包含的单词，不在 **已掌握单词列表** 中的单词会自动添加到 **陌生单词** 列表
 
 ![使用教程](https://www.miaoqiyuan.cn/products/vscode-huile8/help/help.gif)
+
+单词后面可以显示 单词解释
+
+鼠标悬停可以显示 音标和解释
+
+点击单词可以朗读本单词
+
+![使用教程](https://www.miaoqiyuan.cn/products/vscode-huile8/help/tips.gif)
 
 # 已掌握单词列表文件
 
@@ -26,6 +35,8 @@
 
 ![使用教程](https://www.miaoqiyuan.cn/products/vscode-huile8/help/edit.gif)
 
+
+
 ## 手工设置
 
 也可以手工编辑 **[用户目录]/.vscode/huile8-mastered-list.txt** ，设置已掌握单词：
@@ -35,4 +46,40 @@ console
 log
 hello
 world
+```
+
+
+
+## 离线词库
+
+[skywind3000/ECDICT](https://github.com/skywind3000/ECDICT)
+
+[fxsjy/diaosi](https://github.com/fxsjy/diaosi)
+
+
+
+## 功能实现
+
+- [x] 源码单词分析
+- [x] 点击播放读音
+- [x] 悬停显示单词解释
+- [ ] 禅模式(循环播放陌生单词)
+- [ ] 陌生单词列表
+
+
+
+## 二次开发
+
+```bash
+# 1、代码克隆
+git clone https://github.com/mqycn/huile8.git
+
+# 2、更新词库
+npm run dict.init
+npm run dict.update
+
+# 3、vscode 调试
+
+# 4、打包
+npm run publish
 ```

@@ -1,3 +1,6 @@
 node_modules
 .vscode-test/
 *.vsix
+package-lock.json
+.DS_Store
+dictionary/ECDICT/*.json
