@@ -43,21 +43,25 @@ class WordsApp {
     } else {
       statusBar.update('单词分析中...');
       const text = vscode.window.activeTextEditor.document.getText();
-
-      // 单词整理，暂时先都放到 还不会
-      const { providerWillMastering, providerMastered } = this.dataInit();
-      getWords(text).forEach(word => {
-        if (hasMastered(word)) {
-          providerMastered.list.push(word);
-        } else {
-          providerWillMastering.list.push(word);
-        }
-      });
-
-      // 更新并清空Set
-      providerMastered.flush();
-      providerWillMastering.flush();
+      this.analyse(text)
     }
+  }
+
+  // 分析结果
+  analyse(text) {
+    // 单词整理，暂时先都放到 还不会
+    const { providerWillMastering, providerMastered } = this.dataInit();
+    getWords(text).forEach(word => {
+      if (hasMastered(word)) {
+        providerMastered.list.push(word);
+      } else {
+        providerWillMastering.list.push(word);
+      }
+    });
+
+    // 更新并清空Set
+    providerMastered.flush();
+    providerWillMastering.flush();
   }
 
   // 还不会 -> 已学会

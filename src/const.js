@@ -7,6 +7,9 @@ const CommandWillMastering = 'huile8.willMastering';
 // 学会了
 const CommandDidMastered = 'huile8.didMastered';
 
+// 分析分本
+const CommandAnalyse = 'huile8.text.selection';
+
 // 读单词
 const CommandRead = 'huile8.read';
 
@@ -20,6 +23,7 @@ module.exports = {
   CommandRefresh,
   CommandWillMastering,
   CommandDidMastered,
+  CommandAnalyse,
   CommandRead,
   Mastered,
   UnMastered
