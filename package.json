@@ -26,6 +26,12 @@
 			]
 		},
 		"views": {
+			"explorer": [
+				{
+					"id": "huile8-will-mastering-main",
+					"name": "陌生单词"
+				}
+			],
 			"huile8-explorer": [
 				{
 					"id": "huile8-will-mastering",
