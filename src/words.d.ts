@@ -8,7 +8,7 @@ class WordsApp {
   providerWillMastering: TreeDataProvider;
   providerMastered: TreeDataProvider;
   refresh();
-  analyse(String: text);
+  selected(String: text);
   didMastered(item: TypeNode);
   willMastering(item: TypeNode);
   read(item: TypeNode)

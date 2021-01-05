@@ -9,7 +9,7 @@ const { CommandDidMastered, CommandRefresh, CommandAnalyse, CommandWillMastering
  */
 function activate(context) {
 	const { window, commands } = vscode;
-	const { registerTreeDataProvider, activeTextEditor } = window;
+	const { registerTreeDataProvider } = window;
 	const { registerCommand } = commands;
 
 	const app = new WordsApp(context);
@@ -22,9 +22,7 @@ function activate(context) {
 	registerCommand(CommandDidMastered, (item) => { app.didMastered(item); });
 	registerCommand(CommandWillMastering, (item) => { app.willMastering(item); });
 	registerCommand(CommandRead, (item) => { app.read(item); });
-	registerCommand(CommandAnalyse, () => {
-		app.analyse(activeTextEditor.document.getText(activeTextEditor.selection));
-	});
+	registerCommand(CommandAnalyse, () => { app.selected(); });
 };
 
 function deactivate() {

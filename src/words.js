@@ -34,16 +34,30 @@ class WordsApp {
     return this;
   }
 
-  // 分析新打开文件包含的单词
-  refresh() {
+  // 检查编辑器
+  checkEditor() {
     if (!vscode.window.activeTextEditor) {
       statusBar.update('请切换到代码文件');
     } else if (vscode.window.activeTextEditor.document.uri.scheme !== 'file') {
       statusBar.update('只支持本地文件');
     } else {
+      return true
+    }
+  }
+
+  // 分析新打开文件包含的单词
+  refresh() {
+    if (this.checkEditor()) {
       statusBar.update('单词分析中...');
-      const text = vscode.window.activeTextEditor.document.getText();
-      this.analyse(text)
+      this.analyse(vscode.window.activeTextEditor.document.getText())
+    }
+  }
+
+  // 分析选文本
+  selected() {
+    if (this.checkEditor()) {
+      statusBar.update('分析选中代码中...');
+      this.analyse(vscode.window.activeTextEditor.document.getText(vscode.window.activeTextEditor.selection))
     }
   }
 
