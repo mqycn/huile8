@@ -1,18 +1,27 @@
 <h1>朗读页面，请点击标签切换到代码页</h1>
 <audio id="audio"></audio>
 <script>
-    const $ = (selector) => document.querySelector(selector)
+  const $ = (selector) => document.querySelector(selector)
 
-    const vscode = acquireVsCodeApi();
-    window.addEventListener('message', event => {
-        const {
-            word,
-        } = event.data;
-        $('#audio').src = `http://dict.youdao.com/dictvoice?type=0&audio=${word}`
+  const vscode = acquireVsCodeApi()
+  let readType = ''
+  let voiceType = '0'
+  /* readType = '' */
+  /* voiceType = '0' */
+  window.addEventListener('message', (event) => {
+    const { word } = event.data
+    switch (readType) {
+      case 'youdao':
+        $(
+          '#audio'
+        ).src = `https://dict.youdao.com/dictvoice?type=${voiceType}&audio=${word}`
         $('#audio').play()
-
-        // const utterance = new SpeechSynthesisUtterance(word);
-        // speechSynthesis.speak(utterance);
-        vscode.postMessage(event.data);
-    });
+        break
+      default:
+        const utterance = new SpeechSynthesisUtterance(word)
+        speechSynthesis.speak(utterance)
+        break
+    }
+    vscode.postMessage(event.data)
+  })
 </script>
