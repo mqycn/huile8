@@ -71,6 +71,9 @@ world
 ## 二次开发
 
 ```bash
+# 0、安装VS Code开发环境
+npm install -g yo generator-code vsce
+
 # 1、代码克隆
 git clone https://github.com/mqycn/huile8.git
 
@@ -83,6 +86,7 @@ npm run dict.init-github
 npm run dict.update
 
 # 3、vscode 调试
+# 按 F5 启动调试
 
 # 4、打包
 npm run publish
