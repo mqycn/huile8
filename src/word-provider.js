@@ -114,7 +114,7 @@ class WordItem extends vscode.TreeItem {
   };
 
   get description() {
-    return this.data ?
+    return this.data.translation ?
       this.data.translation.replace(/\n/g, '、')
       : '未收录';
   };
