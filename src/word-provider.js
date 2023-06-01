@@ -4,6 +4,7 @@ const { CommandRead } = require('./const');
 const path = require('path');
 const { localDictionary, addWordTask } = require('./dictionary');
 const statusBar = require('./status-bar');
+const { Config } = require('./ShanBei/config');
 
 module.exports = class WordProvider {
   constructor(context) {
@@ -58,7 +59,6 @@ module.exports = class WordProvider {
     addWordTask(this.list, () => {
       this.flush();
     });
-
   }
 
   // 获取子节点
@@ -120,6 +120,10 @@ class WordItem extends vscode.TreeItem {
   };
 
   get contextValue() {
+    let shanbeiWord =  Config.getInstance().shanbeiWord
+    if(!shanbeiWord.hasWord(this.word)){
+      return 'noAddedWord';
+    }
     return 'word';
   };
 };

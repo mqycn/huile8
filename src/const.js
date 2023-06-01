@@ -13,6 +13,11 @@ const CommandAnalyse = 'huile8.text.selection';
 // 读单词
 const CommandRead = 'huile8.read';
 
+
+// 扇贝登录
+const ShanBeiLogin = 'huile8.ShanBeiLogin';
+const ShanBeiSaveWord = 'huile8-mastered-shanbei-word-save';
+
 // 已经学会
 const Mastered = 1;
 
@@ -26,5 +31,7 @@ module.exports = {
   CommandAnalyse,
   CommandRead,
   Mastered,
-  UnMastered
+  UnMastered,
+  ShanBeiLogin,
+  ShanBeiSaveWord
 };

@@ -1,7 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 const vscode = require('vscode');
 const { WordsApp } = require('./src/words');
-const { CommandDidMastered, CommandRefresh, CommandAnalyse, CommandWillMastering, CommandRead } = require('./src/const');
+const { CommandDidMastered, CommandRefresh, CommandAnalyse, CommandWillMastering, CommandRead, ShanBeiLogin, ShanBeiSaveWord } = require('./src/const');
+const { getShanBeiToken } = require('./src/ShanBei/login-shanbei');
+const { ShanBeiService } = require('./src/ShanBei/shanbei-service');
 
 /**
  * 激活
@@ -23,6 +25,8 @@ function activate(context) {
 	registerCommand(CommandWillMastering, (item) => { app.willMastering(item); });
 	registerCommand(CommandRead, (item) => { app.read(item); });
 	registerCommand(CommandAnalyse, () => { app.selected(); });
+	registerCommand(ShanBeiLogin, () => { app.shanBeiMain.getShanBeiToken() });
+	registerCommand(ShanBeiSaveWord, (item) => { app.shanBeiMain.save(item)});
 };
 
 function deactivate() {

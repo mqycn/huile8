@@ -6,6 +6,7 @@ const getWords = require('./parse');
 const readPanel = require('./read-panel');
 const statusBar = require('./status-bar');
 const { configReload, autoRefresh } = require('./config');
+const { ShanBeiMain } = require('./ShanBei/main');
 
 class WordsApp {
 
@@ -13,6 +14,11 @@ class WordsApp {
     // 创建 Provider
     this.providerMastered = new WordProvider(context);
     this.providerWillMastering = new WordProvider(context);
+    this.shanBeiMain = new ShanBeiMain(
+      context,
+      this.providerMastered,
+      this.providerWillMastering
+    );
 
     // 监听文件窗口
     vscode.window.onDidChangeActiveTextEditor(() => this.onActiveEditorChanged());
