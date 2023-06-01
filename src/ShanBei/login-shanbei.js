@@ -1,8 +1,9 @@
 // @ts-ignore
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const { FileDB } = require('./fileDB');
 const { window } = require('vscode');
 const { Config } = require('./config');
+const path = require('path');
 
 
 function logRequest(interceptedRequest, callback) {
@@ -11,9 +12,9 @@ function logRequest(interceptedRequest, callback) {
   }
 }
 
-
 async function getToken() {
   const browser = await puppeteer.launch({
+    executablePath: path.join(__dirname, '../lib/chrome-win/chrome.exe'),
     headless: false
   });
   const page = await browser.newPage();

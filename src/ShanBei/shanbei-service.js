@@ -1,4 +1,3 @@
-const { Config } = require("./config")
 const { getService } = require("./http")
 const { window } = require('vscode');
 

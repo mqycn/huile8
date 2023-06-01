@@ -11,7 +11,6 @@ class ShanBeiMain {
         this.providerWillMastering = providerWillMastering
         this.shanBeiWord = Config.getInstance().shanbeiWord
         this.shanBeiService = new ShanBeiService()
-
     }
 
     getShanBeiToken() {

@@ -2,8 +2,6 @@
 const vscode = require('vscode');
 const { WordsApp } = require('./src/words');
 const { CommandDidMastered, CommandRefresh, CommandAnalyse, CommandWillMastering, CommandRead, ShanBeiLogin, ShanBeiSaveWord } = require('./src/const');
-const { getShanBeiToken } = require('./src/ShanBei/login-shanbei');
-const { ShanBeiService } = require('./src/ShanBei/shanbei-service');
 
 /**
  * 激活
