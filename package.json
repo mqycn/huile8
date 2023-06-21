@@ -3,7 +3,7 @@
 	"publisher": "mqycn",
 	"displayName": "会了吧",
 	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码。用了会了吧，统统都会啦！",
-	"version": "0.0.13",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.23.0"
 	},
