@@ -13,7 +13,7 @@
 
 安装后，点击源码文件，会自动分析所有包含的单词，不在 **已掌握单词列表** 中的单词会自动添加到 **陌生单词** 列表
 
-![使用教程](https://www.miaoqiyuan.cn/products/vscode-huile8/help/help.gif)
+![使用教程](https://huile8.myw3.cn/static/help.gif)
 
 单词后面可以显示 单词解释
 
@@ -21,7 +21,7 @@
 
 点击单词可以朗读本单词
 
-![使用教程](https://www.miaoqiyuan.cn/products/vscode-huile8/help/tips.gif)
+![使用教程](https://huile8.myw3.cn/static/tips.gif)
 
 # 已掌握单词列表文件
 
@@ -33,9 +33,14 @@
 
 在 **已掌握单词** 中的单词，点击 图标 可以 将 单词 从 **已掌握单词列表文件** 中 删除
 
-![使用教程](https://www.miaoqiyuan.cn/products/vscode-huile8/help/edit.gif)
+![使用教程](https://huile8.myw3.cn/static/edit.gif)
 
 
+## 禅模式
+
+点击朗读的单词，会自动添加到当日的 **单词列表** ，禅模式会循环朗读列表中的参数
+
+![使用教程](https://huile8.myw3.cn/static/chan.gif)
 
 ## 手工设置
 
@@ -63,8 +68,8 @@ world
 - [x] 源码单词分析
 - [x] 点击播放读音
 - [x] 悬停显示单词解释
-- [ ] 禅模式(循环播放陌生单词)
-- [ ] 陌生单词列表
+- [x] 禅模式(循环播放陌生单词)
+- [x] 陌生单词列表
 
 
 
