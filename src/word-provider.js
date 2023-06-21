@@ -100,9 +100,9 @@ class WordItem extends vscode.TreeItem {
       this.data.phonetic ?
         [
           `音标：[${this.data.phonetic}}]`,
-          `解释：${this.data.translation.replace(/\n/g, '\n　　　')}`
+          `解释：${this.data.translation?.replace(/\n/g, '\n　　　')}`
         ].join('\n')
-        : this.data.translation
+        : this.data.translation?.replace(/\n/g, '\n　　　')
       : 'loading...';
   }
 
@@ -114,7 +114,7 @@ class WordItem extends vscode.TreeItem {
   };
 
   get description() {
-    return this.data.translation ?
+    return this.data && this.data.translation ?
       this.data.translation.replace(/\n/g, '、')
       : '未收录';
   };
