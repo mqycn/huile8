@@ -19,7 +19,7 @@ module.exports = function () {
             null
         const panel = _readPanel = vscode.window.createWebviewPanel(
             'ReadPanel',
-            '会了吧：单词朗读',
+            '会了吧：单词朗读12',
             vscode.ViewColumn.One,
             {
                 enableScripts: true,
@@ -45,7 +45,6 @@ module.exports = function () {
         panel.onDidDispose(() => {
             _readPanel = null;
         });
-
         // 启动后激活之前的标签
         if (activeDocument) {
             setTimeout(() => {

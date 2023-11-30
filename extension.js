@@ -14,7 +14,7 @@ function activate(context) {
 
 	const app = new WordsApp(context);
 
-	registerTreeDataProvider('huile8-will-mastering-main', app.providerWillMastering);
+	// registerTreeDataProvider('huile8-will-mastering-main', app.providerWillMastering);
 	registerTreeDataProvider('huile8-will-mastering', app.providerWillMastering);
 	registerTreeDataProvider('huile8-mastered', app.providerMastered);
 
