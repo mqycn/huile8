@@ -53,7 +53,7 @@ function createGist(accessToken, filename, content, description) {
                 }
             },
             description: description,
-            public: true
+            public: false
         };
 
         const options = {

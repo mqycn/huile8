@@ -50,6 +50,16 @@ async function saveToGist() {
         return word.trim();
     });
     const content = list.join('\n')
+    console.log('tlf-gist-saveToGist', gistId)
+    if (!gistId) {
+        let id = await checkGistExistence(token, userName, fileName, des)
+        if (id) {
+            gistId = id
+        } else {
+            await createGist(token, fileName, content, des)
+        }
+        return
+    }
     // console.log('tlf-gist-baocun', content)
     if (gistId) {
         await editGist(token, gistId, fileName, content)
