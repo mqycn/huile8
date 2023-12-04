@@ -19,11 +19,11 @@ module.exports = function () {
             null
         const panel = _readPanel = vscode.window.createWebviewPanel(
             'ReadPanel',
-            '会了吧：单词朗读12',
+            '会了吧：单词朗读',
             vscode.ViewColumn.One,
             {
                 enableScripts: true,
-                retainContextWhenHidden: true
+                retainContextWhenHidden: false
             }
         );
 

@@ -5,14 +5,58 @@ const dbFile = path.join(__dirname, '..', '..', '..', 'huile8-mastered-list.txt'
 
 const masteredList = new Set();
 
+const { checkGistExistence, createGist, editGist, getGistContent } = require("./gist");
+const { log } = require('console');
+const des = "huile8"
+const fileName = "huile8-mastered-list.txt"
+const userName = "tlff"
+const token = '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'
+let gistId = false
+initdata()
 // 读取记录
-if (fs.existsSync(dbFile)) {
-    const json = fs.readFileSync(dbFile).toString();
-    json.split('\n').forEach(word => {
-        masteredList.add(word.trim());
-    });
+async function initdata() {
+    if (fs.existsSync(dbFile)) {
+        const json = fs.readFileSync(dbFile).toString();
+        json.split('\n').forEach(word => {
+            if (word.trim()) {
+                masteredList.add(word.trim());
+            }
+        });
+    }
+    await init()
+    // console.log('tlf-gist', token, gistId, fileName)
+    const content = await getGistContent(token, gistId, fileName)
+    // console.log('tlf-gist', content)
+    content.split('\n').forEach(word => {
+        if (word.trim()) {
+            masteredList.add(word.trim());
+        }
+    })
+}
+async function init() {
+    if (!gistId) {
+        let id = await checkGistExistence(token, userName, fileName, des)
+        if (id) {
+            gistId = id
+        } else {
+            await createGist(token, fileName, 'init', des)
+        }
+        return
+    }
 }
 
+async function saveToGist() {
+    const list = Array.from(masteredList).map(word => {
+        return word.trim();
+    });
+    const content = list.join('\n')
+    // console.log('tlf-gist-baocun', content)
+    if (gistId) {
+        await editGist(token, gistId, fileName, content)
+    }
+
+
+}
 // 保存到硬盘
 function saveToFile() {
     const list = Array.from(masteredList).map(word => {
@@ -30,12 +74,14 @@ function hasMastered(item) {
 function addMastered(item) {
     masteredList.add(item);
     saveToFile();
+    saveToGist()
 }
 
 // 删除单词记录
 function removeMastered(item) {
     masteredList.delete(item);
     saveToFile();
+    saveToGist()
 }
 
 module.exports = {

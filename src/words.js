@@ -6,6 +6,7 @@ const getWords = require('./parse');
 const readPanel = require('./read-panel');
 const statusBar = require('./status-bar');
 const { configReload, autoRefresh } = require('./config');
+const { log } = require('console');
 
 class WordsApp {
 
@@ -36,13 +37,18 @@ class WordsApp {
 
   // 检查编辑器
   checkEditor() {
+
     if (!vscode.window.activeTextEditor) {
       statusBar.update('请切换到代码文件');
-    } else if (vscode.window.activeTextEditor.document.uri.scheme !== 'file') {
-      statusBar.update('只支持本地文件');
     } else {
+      // console.clear()
+      // console.log(vscode.window.activeTextEditor.document.getText());
       return true
     }
+    // else if (vscode.window.activeTextEditor.document.uri.scheme !== 'file') {
+    //   statusBar.update('只支持本地文件');
+    // }
+    // return true
   }
 
   // 分析新打开文件包含的单词
