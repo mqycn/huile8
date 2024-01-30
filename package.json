@@ -1,9 +1,9 @@
 {
     "name": "huile8",
-	"publisher": "mqycn",
-	"displayName": "会了吧",
-	"description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码。用了会了吧，统统都会啦！",
-	"version": "1.0.1",
+    "publisher": "mqycn",
+    "displayName": "会了吧",
+    "description": "打开源码可以自动分析所有包含的英语单词，并显示解释结果，先学单词再看代码。用了会了吧，统统都会啦！",
+    "version": "1.0.1",
     "engines": {
         "vscode": "^1.23.0"
     },
@@ -124,17 +124,6 @@
                         "default": "",
                         "description": "同步单词本到gist,这里是gist的token"
                     }
-                    // ,
-                    // "huile8.baiduApiKey": {
-                    //     "type": "string",
-                    //     "default": "",
-                    //     "description": "百度语音合成的apiKey"
-                    // },
-                    // "huile8.baiduSecretKey": {
-                    //     "type": "string",
-                    //     "default": "",
-                    //     "description": "百度语音合成的secretKey"
-                    // }
                 }
             }
         ]
