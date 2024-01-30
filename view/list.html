@@ -1,398 +1,467 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-
-<head>
-    <meta charset="utf-8">
-    <title>会了吧</title>
-    <script>
-        try {
-            const vscode = acquireVsCodeApi()
-        } catch (e) {
-            /* 浏览器测试模式 */
-            localStorage.setItem('2023/06/18', JSON.stringify({
-                facades: {
-                    word: "facades",
-                    data: {
-                        "phonetic": "fəˈsɑ:dz",
-                        "translation": "n. <建>（房屋的）正面( facade的复数形式 ); 假象, 外观"
-                    },
-                    addTime: "20:48:37"
-                },
-                function: {
-                    word: "function",
-                    data: {
-                        "phonetic": "'fʌŋkʃәn",
-                        "translation": "n. 官能, 职务, 功能, 函数\nvi. 活动, 运行, 行使职责\n[计] 功能, 函数"
-                    },
-                    addTime: "20:48:39"
-                }
-            }))
-            localStorage.setItem('2023/06/20', JSON.stringify({
-                illuminate: {
-                    label: "illuminate",
-                    word: "illuminate",
-                    data: {
-                        "phonetic": "i'lju:mineit",
-                        "translation": "vt. 照明, 用灯装饰, 阐明, 说明, 使灿烂\nvi. 照亮, 用灯装饰"
-                    },
-                    addTime: "20:48:41"
-                }
-            }))
-            localStorage.setItem('2023/06/21', JSON.stringify({
-                schema: {
-                    label: "schema",
-                    word: "schema",
-                    data: {
-                        "phonetic": "'ski:mә",
-                        "translation": "n. 概要, 图解, 略图\n[计] 模式"
-                    },
-                    addTime: "20:49:21"
-                },
-                migration: {
-                    label: "migration",
-                    word: "migration",
-                    data: {
-                        "phonetic": "mai'greiʃәn",
-                        "translation": "n. 移民, 移往, 移动\n[计] 迁移"
-                    },
-                    addTime: "20:49:00"
-                }
-            }))
-        }
-
-        // 日期扩展
-        const $time = {
-            now() {
-                const self = this
-                const date = new Date()
-                return {
-                    date: self.date(date),
-                    time: self.time(date),
-                    value: [self.date(date), self.time(date)].join(' '),
-                }
-            },
-            pad(num) {
-                return (num < 10 ? '0' : '') + num
-            },
-            date(date) {
-                return [
-                    date.getFullYear(),
-                    this.pad(date.getMonth() + 1),
-                    this.pad(date.getDate())
-                ].join('/')
-            },
-            time(date) {
-                return [
-                    this.pad(date.getHours()),
-                    this.pad(date.getMinutes()),
-                    this.pad(date.getSeconds())
-                ].join(':')
+    <head>
+        <meta charset="utf-8" />
+        <title>会了吧</title>
+        <script>
+            try {
+                const vscode = acquireVsCodeApi();
+            } catch (e) {
+                /* 浏览器测试模式 */
+                localStorage.setItem(
+                    "2023/06/18",
+                    JSON.stringify({
+                        facades: {
+                            word: "facades",
+                            data: {
+                                phonetic: "fəˈsɑ:dz",
+                                translation:
+                                    "n. <建>（房屋的）正面( facade的复数形式 ); 假象, 外观",
+                            },
+                            addTime: "20:48:37",
+                        },
+                        function: {
+                            word: "function",
+                            data: {
+                                phonetic: "'fʌŋkʃәn",
+                                translation:
+                                    "n. 官能, 职务, 功能, 函数\nvi. 活动, 运行, 行使职责\n[计] 功能, 函数",
+                            },
+                            addTime: "20:48:39",
+                        },
+                    })
+                );
+                localStorage.setItem(
+                    "2023/06/20",
+                    JSON.stringify({
+                        illuminate: {
+                            label: "illuminate",
+                            word: "illuminate",
+                            data: {
+                                phonetic: "i'lju:mineit",
+                                translation:
+                                    "vt. 照明, 用灯装饰, 阐明, 说明, 使灿烂\nvi. 照亮, 用灯装饰",
+                            },
+                            addTime: "20:48:41",
+                        },
+                    })
+                );
+                localStorage.setItem(
+                    "2023/06/21",
+                    JSON.stringify({
+                        schema: {
+                            label: "schema",
+                            word: "schema",
+                            data: {
+                                phonetic: "'ski:mә",
+                                translation: "n. 概要, 图解, 略图\n[计] 模式",
+                            },
+                            addTime: "20:49:21",
+                        },
+                        migration: {
+                            label: "migration",
+                            word: "migration",
+                            data: {
+                                phonetic: "mai'greiʃәn",
+                                translation: "n. 移民, 移往, 移动\n[计] 迁移",
+                            },
+                            addTime: "20:49:00",
+                        },
+                    })
+                );
             }
-        }
-        // 通过ID获取元素
-        const $refs = {}
-        // 历史查询记录
-        const $history = {
-            $data: {},
-            $loopMode: true,
-            $loopIndex: 0,
-            $date: $time.now().date,
-            read(word) {
-                $audio.set(this.$data[word]).local()
-            },
-            add(item) {
-                this.today()
-                item.addTime = $time.now().time
-                this.$data[item.word] = item
-                this.store().render()
-            },
-            list() {
-                return Object.values(this.$data).sort((a, b) => a.addTime < b.addTime)
-            },
-            render() {
-                $refs.history.innerHTML = this.list().map(item => {
+
+            // 日期扩展
+            const $time = {
+                now() {
+                    const self = this;
+                    const date = new Date();
+                    return {
+                        date: self.date(date),
+                        time: self.time(date),
+                        value: [self.date(date), self.time(date)].join(" "),
+                    };
+                },
+                pad(num) {
+                    return (num < 10 ? "0" : "") + num;
+                },
+                date(date) {
                     return [
-                        `<div class="panel word-panel" onclick="$history.read('${item.word}')" >`,
-                        `  <h2 class="title">${item.word}</h2>`,
-                        `  <div ref="translation" class="translation">${item.data.translation}</div>`,
-                        `</div>`,
-                    ].join('')
-                }).join('')
-            },
-            renderDate() {
-                $refs.date.innerHTML = Object.keys(localStorage).map(date => {
-                    const active = this.$date == date ? ' class="active" ' : ''
-                    return `<li onclick="$history.setDate('${date}')" ${active}>${date}</li>`
-                }).join('')
-                this.render()
-            },
-            loop() {
-                this.stop()
-                this.__loopTimer = setInterval(() => {
-                    const list = this.list()
-                    this.$loopIndex++
-                    if (list.length - 1 < this.$loopIndex) {
-                        this.$loopIndex = 0
+                        date.getFullYear(),
+                        this.pad(date.getMonth() + 1),
+                        this.pad(date.getDate()),
+                    ].join("/");
+                },
+                time(date) {
+                    return [
+                        this.pad(date.getHours()),
+                        this.pad(date.getMinutes()),
+                        this.pad(date.getSeconds()),
+                    ].join(":");
+                },
+            };
+            // 通过ID获取元素
+            const $refs = {};
+            // 历史查询记录
+            const $history = {
+                $data: {},
+                $loopMode: true,
+                $loopIndex: 0,
+                $date: $time.now().date,
+                read(word) {
+                    if (isClick) {
+                        $audio.set(this.$data[word]).youdao();
+                    } else {
+                        $audio.set(this.$data[word]).local();
                     }
-                    $audio.set(list[this.$loopIndex]).local()
-                    $refs.history_stop.innerText = `退出禅模式  ${this.$loopIndex} / ${list.length}`
-                }, 3000)
-                $refs.history_loop.style.display = 'none'
-                $refs.history_stop.style.display = ''
-            },
-            stop() {
-                clearInterval(this.__loopTimer)
-                $refs.history_loop.style.display = ''
-                $refs.history_stop.style.display = 'none'
-                return this
-            },
-            today() {
-                return this.setDate($time.now().date)
-            },
-            setDate(date) {
-                this.$date = date
-                this.restore().renderDate()
-                return this
-            },
-            store() {
-                localStorage.setItem(this.$date, JSON.stringify(this.$data))
-                return this
-            },
-            restore() {
-                try {
-                    this.$data = JSON.parse(localStorage.getItem(this.$date) || '{}')
-                } catch (error) {
-                    this.$data = {}
+                    // $audio.set(this.$data[word]).local()
+                },
+                add(item) {
+                    this.today();
+                    item.addTime = $time.now().time;
+                    this.$data[item.word] = item;
+                    this.store().render();
+                },
+                list() {
+                    return Object.values(this.$data).sort(
+                        (a, b) => a.addTime < b.addTime
+                    );
+                },
+                render() {
+                    $refs.history.innerHTML = this.list()
+                        .map((item) => {
+                            return [
+                                `<div class="panel word-panel" onclick="$history.read('${item.word}')" >`,
+                                `  <h2 class="title">${item.word}</h2>`,
+                                `  <div ref="translation" class="translation">${item.data.translation}</div>`,
+                                `</div>`,
+                            ].join("");
+                        })
+                        .join("");
+                },
+                renderDate() {
+                    $refs.date.innerHTML = Object.keys(localStorage)
+                        .map((date) => {
+                            const active =
+                                this.$date == date ? ' class="active" ' : "";
+                            return `<li onclick="$history.setDate('${date}')" ${active}>${date}</li>`;
+                        })
+                        .join("");
+                    this.render();
+                },
+                loop() {
+                    this.stop();
+                    this.__loopTimer = setInterval(() => {
+                        const list = this.list();
+                        this.$loopIndex++;
+                        if (list.length - 1 < this.$loopIndex) {
+                            this.$loopIndex = 0;
+                        }
+                        $audio.set(list[this.$loopIndex]).local();
+                        $refs.history_stop.innerText = `退出禅模式  ${this.$loopIndex} / ${list.length}`;
+                    }, 3000);
+                    $refs.history_loop.style.display = "none";
+                    $refs.history_stop.style.display = "";
+                },
+                stop() {
+                    clearInterval(this.__loopTimer);
+                    $refs.history_loop.style.display = "";
+                    $refs.history_stop.style.display = "none";
+                    return this;
+                },
+                today() {
+                    return this.setDate($time.now().date);
+                },
+                setDate(date) {
+                    this.$date = date;
+                    this.restore().renderDate();
+                    return this;
+                },
+                store() {
+                    localStorage.setItem(
+                        this.$date,
+                        JSON.stringify(this.$data)
+                    );
+                    return this;
+                },
+                restore() {
+                    try {
+                        this.$data = JSON.parse(
+                            localStorage.getItem(this.$date) || "{}"
+                        );
+                    } catch (error) {
+                        this.$data = {};
+                    }
+                    return this;
+                },
+            };
+            // TTS服务
+            const $audio = {
+                $word: "test",
+                $data: {},
+                local() {
+                    const utterance = new SpeechSynthesisUtterance(this.$word);
+                    speechSynthesis.speak(utterance);
+                },
+                youdao() {
+                    $refs.audio_youdao.src = `https://dict.youdao.com/dictvoice?type=0&audio=${this.$word}`;
+                    $refs.audio_youdao.play();
+                },
+                baidu() {
+                    $refs.audio_baidu.src = `https://tsn.baidu.com/text2audio?tex=${this.$word}&per=4&lan=zh&cuid=tlf-vscode-words&ctp=1&aue=3&tok=24.d478ccbeaef0a32019f010e1d0a5a9a7.2592000.1703669397.282335-43840785`;
+                    $refs.audio_baidu.play();
+                },
+                word() {
+                    return this.$word;
+                },
+                set(item) {
+                    this.$word = item.word;
+                    this.$data = item.data;
+                    this.render();
+                    return this;
+                },
+                render() {
+                    $refs.word.innerText = this.$word;
+                    $refs.phonetic.innerText = this.$data.phonetic || "";
+                    $refs.translation.innerText =
+                        this.$data.translation || "未收录";
+                    return this;
+                },
+            };
+            let isClick = false;
+            const clickHandle = (event) => {
+                isClick = true;
+                document.removeEventListener(clickHandle);
+            };
+            document.addEventListener("click", clickHandle);
+            window.addEventListener("message", (event) => {
+                if (isClick) {
+                    $audio.set(event.data).youdao();
+                } else {
+                    $audio.set(event.data).local();
                 }
-                return this
-            }
-        }
-        // TTS服务
-        const $audio = {
-            $word: 'test',
-            $data: {},
-            local() {
-                const utterance = new SpeechSynthesisUtterance(this.$word)
-                speechSynthesis.speak(utterance)
-            },
-            youdao() {
-                $refs.audio_youdao.src = `https://dict.youdao.com/dictvoice?type=0&audio=${this.$word}`
-                $refs.audio_youdao.play()
-            },
-            baidu() {
-                $refs.audio_baidu.src =
-                    `https://tsn.baidu.com/text2audio?tex=${this.$word}&per=4&lan=zh&cuid=tlf-vscode-words&ctp=1&aue=3&tok=24.d478ccbeaef0a32019f010e1d0a5a9a7.2592000.1703669397.282335-43840785`
-                $refs.audio_baidu.play()
-            },
-            word() {
-                return this.$word
-            },
-            set(item) {
-                this.$word = item.word
-                this.$data = item.data
-                this.render()
-                return this
-            },
-            render() {
-                $refs.word.innerText = this.$word
-                $refs.phonetic.innerText = this.$data.phonetic || ''
-                $refs.translation.innerText = this.$data.translation || '未收录'
-                return this
-            }
-        }
-        let isClick=false
-        const clickHandle=event=>{
-            isClick=true
-            document.removeEventListener(clickHandle)
-        }
-        document.addEventListener('click',clickHandle)
-        window.addEventListener('message', event => {
-            if(isClick){
-                $audio.set(event.data).youdao()      
-            }else{
-                $audio.set(event.data).local()    
+
+                $history.stop().add(event.data);
+            });
+            window.addEventListener("load", () => {
+                document.querySelectorAll("[ref]").forEach((dom) => {
+                    $refs[dom.getAttribute("ref")] = dom;
+                });
+                $history.renderDate();
+                console.log("load", $refs.word.innerText);
+                $audio.youdao();
+            });
+        </script>
+        <style type="text/css">
+            body {
+                height: 100vh;
+                color: #fafafa;
+                font-size: 14px;
+                font-family: Arial, Helvetica, sans-serif;
+                min-width: 750px;
             }
 
-            
-            $history.stop().add(event.data)
-        })
-        window.addEventListener('load', () => {
-            
-            document.querySelectorAll('[ref]').forEach(dom => {
-                $refs[dom.getAttribute('ref')] = dom
-            })
-            $history.renderDate()
-            console.log('load',  $refs.word.innerText);
-            $audio.youdao()
-        })
-    </script>
-    <style type="text/css">
-        body {
-            height: 100vh;
-            color: #fafafa;
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            min-width: 750px;
-        }
+            .container {
+                display: flex;
+                padding: 20px;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+            }
 
-        .container {
-            display: flex;
-            padding: 20px;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-        }
+            .button {
+                cursor: pointer;
+            }
 
-        .button {
-            cursor: pointer;
-        }
+            .sider {
+                width: 380px;
+            }
 
-        .sider {
-            width: 380px;
-        }
+            .main {
+                flex: 1;
+            }
 
-        .main {
-            flex: 1;
-        }
+            .panel {
+                margin: 15px;
+                padding: 8px;
+                background-image: linear-gradient(
+                    175deg,
+                    #530545,
+                    #5f4164,
+                    #627084,
+                    #58a0a5
+                );
+                border-radius: 5px;
+            }
 
-        .panel {
-            margin: 15px;
-            padding: 8px;
-            background-image: linear-gradient(175deg, #530545, #5f4164, #627084, #58a0a5);
-            border-radius: 5px;
-        }
+            /* 单词面板 */
+            .word-panel {
+                color: #fff;
+                line-height: 2em;
+                padding: 15px;
+                background: linear-gradient(
+                    110deg,
+                    #f92d00,
+                    #fe7b00,
+                    #feb200,
+                    #f9e400
+                );
+            }
 
-        /* 单词面板 */
-        .word-panel {
-            color: #FFF;
-            line-height: 2em;
-            padding: 15px;
-            background: linear-gradient(110deg, #f92d00, #fe7b00, #feb200, #f9e400);
-        }
+            .word-panel .title {
+                margin: 0;
+            }
 
-        .word-panel .title {
-            margin: 0;
-        }
+            .word-panel .phonetic button {
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: transparent;
+                background: #eeeeee;
+                cursor: pointer;
+                margin: 8px 8px 8px 0;
+            }
 
-        .word-panel .phonetic button {
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: transparent;
-            background: #eeeeee;
-            cursor: pointer;
-            margin: 8px 8px 8px 0;
-        }
+            .word-panel .phonetic button:first-child {
+                padding: 5px;
+                font-style: italic;
+            }
 
-        .word-panel .phonetic button:first-child {
-            padding: 5px;
-            font-style: italic;
-        }
+            /* 日期面板 */
+            .date-panel {
+                margin-top: 30px;
+                background: linear-gradient(
+                    118deg,
+                    #1678ec,
+                    #2c91df,
+                    #2ca9d1,
+                    #11c2c2
+                );
+            }
 
-        /* 日期面板 */
-        .date-panel {
-            margin-top: 30px;
-            background: linear-gradient(118deg, #1678ec, #2c91df, #2ca9d1, #11c2c2);
-        }
+            .date-panel ul {
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+            }
 
-        .date-panel ul {
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-        }
+            .date-panel ul li {
+                flex: 1;
+                list-style: none;
+                cursor: pointer;
+                margin: 8px;
+                padding: 8px;
+                border-radius: 10px;
+                background: #eeeeee;
+                color: #666;
+                font-size: 1.2em;
+                text-align: center;
+            }
 
-        .date-panel ul li {
-            flex: 1;
-            list-style: none;
-            cursor: pointer;
-            margin: 8px;
-            padding: 8px;
-            border-radius: 10px;
-            background: #eeeeee;
-            color: #666;
-            font-size: 1.2em;
-            text-align: center;
-        }
+            .date-panel ul li.active {
+                color: #ffffff;
+                background: #2c94dd;
+                font-weight: 800;
+            }
 
-        .date-panel ul li.active {
-            color: #ffffff;
-            background: #2c94dd;
-            font-weight: 800;
-        }
+            /* 公众号 */
+            .qrcode-panel {
+                padding: 15px;
+            }
 
-        /* 公众号 */
-        .qrcode-panel {
-            padding: 15px;
-        }
+            .qrcode-panel img {
+                opacity: 0.8;
+            }
 
-        .qrcode-panel img {
-            opacity: 0.8;
-        }
+            /* 单词列表 */
+            .control-panel {
+                margin: 10px;
+                text-align: center;
+                background: transparent;
+            }
 
-        /* 单词列表 */
-        .control-panel {
-            margin: 10px;
-            text-align: center;
-            background: transparent;
-        }
+            .control-panel button {
+                border: 0;
+                padding: 12px 20px;
+                background: #cc0000;
+                color: #fff;
+                font-weight: 800;
+                font-size: 1.2em;
+                border-radius: 10px;
+            }
 
-        .control-panel button {
-            border: 0;
-            padding: 12px 20px;
-            background: #cc0000;
-            color: #fff;
-            font-weight: 800;
-            font-size: 1.2em;
-            border-radius: 10px;
-        }
+            .control-panel button:first-child {
+                background: #009900;
+            }
 
-        .control-panel button:first-child {
-            background: #009900;
-        }
+            .word-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
 
-        .word-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
+            .word-list .word-panel {
+                cursor: pointer;
+                flex: 1;
+                min-width: 180px;
+                margin: 10px;
+                background: linear-gradient(
+                    25deg,
+                    #0a0a7f,
+                    #3d0fa2,
+                    #6314c6,
+                    #891aec
+                );
+            }
+            .phonetic-1 {
+                font-size: 20px;
+            }
+            .phonetic-box-1 {
+                display: flex;
+                flex-direction: row;
+            }
+        </style>
+    </head>
 
-        .word-list .word-panel {
-            cursor: pointer;
-            flex: 1;
-            min-width: 180px;
-            margin: 10px;
-            background: linear-gradient(25deg, #0a0a7f, #3d0fa2, #6314c6, #891aec);
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="sider">
-            <div class="panel word-panel">
-                <h2 ref="word" class="title">test</h2>
-                <div class="phonetic">
-                    <button onclick="$audio.local()">[<span ref="phonetic">test</span>] ◄)</button>
-                    <audio ref="audio_youdao"></audio>
-                    <button onclick="$audio.youdao()">有道</button>
-                    <audio ref="audio_baidu"></audio>
-                    <button onclick="$audio.baidu()">百度</button>
+    <body>
+        <div class="container">
+            <div class="sider">
+                <div class="panel word-panel">
+                    <h2 ref="word" class="title">test</h2>
+                    <div class="phonetic-box-1">
+                        [
+                        <div class="phonetic-1" ref="phonetic">test</div>
+                        ]
+                    </div>
+                    <div class="phonetic">
+                        <button onclick="$audio.local()">本地</button>
+                        <audio ref="audio_youdao"></audio>
+                        <button onclick="$audio.youdao()">有道</button>
+                        <!-- <audio ref="audio_baidu"></audio> -->
+                        <!-- <button onclick="$audio.baidu()">百度</button> -->
+                    </div>
+                    <div ref="translation" class="translation">测试</div>
                 </div>
-                <div ref="translation" class="translation">测试</div>
+                <div class="panel date-panel">
+                    <ul ref="date"></ul>
+                </div>
             </div>
-            <div class="panel date-panel">
-                <ul ref="date"></ul>
+            <div class="main">
+                <div class="panel main-panel">
+                    <div class="panel control-panel">
+                        <button ref="history_loop" onclick="$history.loop()">
+                            点击进入禅模式
+                        </button>
+                        <button
+                            ref="history_stop"
+                            onclick="$history.stop()"
+                            style="display: none"
+                        >
+                            停止禅模式
+                        </button>
+                    </div>
+                    <div ref="history" class="word-list"></div>
+                </div>
             </div>
         </div>
-        <div class="main">
-            <div class="panel main-panel">
-                <div class="panel control-panel">
-                    <button ref="history_loop" onclick="$history.loop()">点击进入禅模式</button>
-                    <button ref="history_stop" onclick="$history.stop()" style="display: none">停止禅模式</button>
-                </div>
-                <div ref="history" class="word-list"></div>
-            </div>
-        </div>
-    </div>
-</body>
-
+    </body>
 </html>
