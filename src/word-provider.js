@@ -96,22 +96,26 @@ class WordItem extends vscode.TreeItem {
   }
 
   get tooltip() {
-    return this.data ?
-      this.data.phonetic ?
-        [
-          `音标：[${this.data.phonetic}}]`,
-          `解释：${this.data.translation?.replace(/\n/g, '\n　　　')}`
-        ].join('\n')
-        : this.data.translation?.replace(/\n/g, '\n　　　')
-      : 'loading...';
+    if (!this.data) {
+      return 'loading...';
+    }
+    
+    if (this.data.phonetic) {
+      return [
+        `音标：[${this.data.phonetic}]`,
+        `解释：${this.data.translation ? this.data.translation.replace(/\n/g, '\n　　　') : ''}`
+      ].join('\n');
+    } else {
+      return this.data.translation ? this.data.translation.replace(/\n/g, '\n　　　') : '';
+    }
   }
 
   get iconPath() {
-    return {
-      light: path.join(__filename, '..', 'resources', 'light', 'icon.svg'),
-      dark: path.join(__filename, '..', 'resources', 'dark', 'icon.svg')
-    }
-  };
+		return {
+			light: path.join(__filename, '..', 'resources', 'light', 'icon.svg'),
+			dark: path.join(__filename, '..', 'resources', 'dark', 'icon.svg')
+		};
+	}
 
   get description() {
     return this.data && this.data.translation ?
