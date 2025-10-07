@@ -37,7 +37,7 @@ class WordsApp {
 
   // 检查编辑器
   checkEditor() {
-    // 检查是否是Jupyter笔记本
+    // 检查是否是jupytor的笔记本
     if (vscode.window.activeNotebookEditor) {
       const notebook = vscode.window.activeNotebookEditor.notebook;
       if (notebook.uri.scheme === 'file' && notebook.uri.fsPath.endsWith('.ipynb')) {
