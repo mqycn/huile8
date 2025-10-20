@@ -266,7 +266,7 @@
                 <p ref="dialog_login_qrcode_help"></p>
             </div>
             <div class="dialog-footer">
-                <button onclick="$api.login()" class="button">扫码完成</button>
+                <button onclick="$api.checkLogin()" class="button">扫码完成</button>
                 <button onclick="$refs.dialog_login.close()" class="button">关闭窗口</button>
             </div>
         </dialog>
@@ -358,6 +358,14 @@
             },
             isLogined() {
                 return !!localStorage.getItem('@user')
+            },
+            change(date) {
+                if (this.isLogined) {
+                    const updated = JSON.parse(localStorage.getItem('@updated'))
+                    updated[date] = false
+                    localStorage.setItem('@updated', JSON.stringify(updated))
+                    this.renderUser()
+                }
             },
             sync() {
                 const words = {}
@@ -491,6 +499,7 @@
             },
             store() {
                 localStorage.setItem(this.$date, JSON.stringify(this.$data))
+                $api.change(this.$date)
                 return this
             },
             restore() {
@@ -549,7 +558,7 @@
             // 远端接口，防止阻塞
             setTimeout(() => {
                 const script = document.createElement('script')
-                script.src = 'https://huile8.myw3.cn/api/huile8-dev.min.js?v=1.0.1'
+                script.src = 'https://huile8.myw3.cn/api/huile8.min.js?v=1.1.1'
                 script.addEventListener('load', () => {
                     $api.onLoad(function (token, onLogined) {
                         window.huile8.init(token, onLogined)
